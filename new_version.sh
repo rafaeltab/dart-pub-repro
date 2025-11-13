@@ -28,7 +28,7 @@ replace_version_in_file() {
 
 # Options
 PREFIX="v"          # set to "" if you don't want a "v" prefix
-REAL_RUN=true
+REAL_RUN=false
 COMMIT=$REAL_RUN
 CREATE_TAG=$REAL_RUN    # set to true to actually create the tag
 ANNOTATE=$REAL_RUN      # set to true to create an annotated tag
