@@ -1,6 +1,6 @@
 name: package_two
 description: "A new Flutter package project."
-version: 1.0.2
+version: 1.0.3
 publish_to: none
 
 environment:
@@ -10,3 +10,5 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  package_three:
+    path: ../package_three

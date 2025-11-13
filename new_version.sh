@@ -28,10 +28,11 @@ replace_version_in_file() {
 
 # Options
 PREFIX="v"          # set to "" if you don't want a "v" prefix
-COMMIT=true
-CREATE_TAG=true    # set to true to actually create the tag
-ANNOTATE=true      # set to true to create an annotated tag
-PUSH_TAG=true      # set to true to push the tag after creating it
+REAL_RUN=true
+COMMIT=$REAL_RUN
+CREATE_TAG=$REAL_RUN    # set to true to actually create the tag
+ANNOTATE=$REAL_RUN      # set to true to create an annotated tag
+PUSH_TAG=$REAL_RUN      # set to true to push the tag after creating it
 REMOTE="origin"     # which remote to push to
 
 # Try to fetch tags (non-fatal if it fails)

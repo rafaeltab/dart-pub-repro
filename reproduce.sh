@@ -6,4 +6,12 @@ then
     exit 1
 fi
 
+fvm flutter pub cache clean -f
 
+reproduce(){
+    cd apps/reproducing_app
+    fvm flutter pub get
+    cd ..
+}
+
+reproduce
