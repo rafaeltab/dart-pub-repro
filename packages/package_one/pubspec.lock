@@ -44,14 +44,14 @@ packages:
       path: "../package_three"
       relative: true
     source: path
-    version: "1.0.4"
+    version: "1.0.5"
   package_two:
     dependency: "direct main"
     description:
       path: "../package_two"
       relative: true
     source: path
-    version: "1.0.4"
+    version: "1.0.5"
   sky_engine:
     dependency: transitive
     description: flutter
