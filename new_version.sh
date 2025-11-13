@@ -1,8 +1,34 @@
 #!/usr/bin/env sh
 set -eu
 
+replace_version_in_file() {
+  local file=$1
+  local NEW_VERSION=$2
+  : "${NEW_VERSION:?Set NEW_VERSION, e.g., export NEW_VERSION='0.0.0'}"
+  [[ -f "$file" ]] || { echo "ERROR: file not found: $file" >&2; return 1; }
+
+  local tmp
+  tmp="$(mktemp "${file}.XXXXXX")"
+
+  # Explanation:
+  # - Use extended regex via -E (BSD/macOS) and -E also works on GNU sed.
+  # - Match:
+  #   (^|[[:space:]])version:[[:space:]]*[0-9]+(\.[0-9]+){2}([^0-9]|$)
+  # - Replace with:
+  #   \1version: NEW_VERSION\3
+  #   where \3 is the trailing non-digit or end (we reconstruct end by omitting it if it was end).
+  # Note: sed cannot reinsert "end of line" as a group; this construction handles both.
+  sed -E "s/(^|[[:space:]])version:[[:space:]]*[0-9]+(\.[0-9]+){2}([^0-9]|$)/\1version: ${NEW_VERSION}\3/g" \
+    "$file" >"$tmp"
+
+  mv "$tmp" "$file"
+
+  echo "Updated $file with the new version $NEW_VERSION"
+}
+
 # Options
 PREFIX="v"          # set to "" if you don't want a "v" prefix
+COMMIT=true
 CREATE_TAG=true    # set to true to actually create the tag
 ANNOTATE=true      # set to true to create an annotated tag
 PUSH_TAG=true      # set to true to push the tag after creating it
@@ -38,6 +64,7 @@ PATCH=$(echo "$HIGHEST" | awk -F. '{print $3}')
 PATCH=$((PATCH + 1))
 NEW_VERSION="${MAJ}.${MIN}.${PATCH}"
 
+
 # Apply prefix
 if [ -n "$PREFIX" ]; then
   NEW_TAG="${PREFIX}${NEW_VERSION}"
@@ -47,6 +74,16 @@ fi
 
 echo "Highest found: ${HIGHEST}"
 echo "Next patch:    ${NEW_TAG}"
+
+replace_version_in_file "packages/package_one/pubspec.yaml" $NEW_VERSION
+replace_version_in_file "packages/package_two/pubspec.yaml" $NEW_VERSION
+replace_version_in_file "packages/package_three/pubspec.yaml" $NEW_VERSION
+replace_version_in_file "apps/reproducing_app/pubspec.yaml" $NEW_VERSION
+
+if [ "$COMMIT" = "true" ]; then
+    git add -A
+    git commit -m "Create new version $NEW_TAG"
+fi
 
 if [ "$CREATE_TAG" = "true" ]; then
   if [ "$ANNOTATE" = "true" ]; then

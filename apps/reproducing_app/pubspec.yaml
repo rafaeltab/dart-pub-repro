@@ -1,8 +1,9 @@
 name: reproducing_app
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
+version: 1.0.2
 
-version: 1.0.0+1
+some_git: &some_git https://github.com/rafaeltab/dart-pub-repro.git
 
 environment:
   sdk: ^3.9.2
@@ -10,7 +11,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  package_one:
+    git:
+      url: *some_git
+      tag_pattern: v{{version}}
+      path: packages/package_one
+    version: 1.0.2
 
 flutter:
   uses-material-design: true
-
