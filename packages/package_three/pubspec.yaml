@@ -1,6 +1,6 @@
 name: package_three
 description: "A new Flutter package project."
-version: 1.0.3
+version: 1.0.4
 publish_to: none
 
 environment:

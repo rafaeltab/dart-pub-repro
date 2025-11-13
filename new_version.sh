@@ -81,6 +81,14 @@ replace_version_in_file "packages/package_two/pubspec.yaml" $NEW_VERSION
 replace_version_in_file "packages/package_three/pubspec.yaml" $NEW_VERSION
 replace_version_in_file "apps/reproducing_app/pubspec.yaml" $NEW_VERSION
 
+cd packages/package_one
+fvm flutter pub get
+cd ../package_two
+fvm flutter pub get
+cd ../package_three
+fvm flutter pub get
+cd ../..
+
 if [ "$COMMIT" = "true" ]; then
     git add -A
     git commit -m "Create new version $NEW_TAG"
